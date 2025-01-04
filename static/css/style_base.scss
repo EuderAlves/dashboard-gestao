@@ -1,0 +1,66 @@
+/* Variáveis para as cores */
+$background-color: #ffffff; // Azul claro pastel
+$button-color: #016caf; // Azul céu pastel
+$button-color-logout: #d33131; // Azul céu pastel
+$text-color: #ffffff; // Cor de texto escura para contraste
+$hover-color: #5fb8d6; // Azul pastel mais claro para hover
+$hover-color-logout: #f17171; // Azul pastel mais claro para hover
+
+/* Estilo global */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: $background-color;
+  color: $text-color;
+}
+
+header {
+  background-color: $background-color;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+
+  /* Centralizar o menu */
+  display: flex;
+  justify-content: center;
+}
+
+.navbar {
+  display: flex;
+  gap: 20px; /* Espaçamento entre botões */
+}
+
+.nav-item {
+  list-style: none;
+
+  a {
+    text-decoration: none;
+    padding: 10px 20px;
+    color: $text-color;
+    background-color: $button-color;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: $hover-color;
+      cursor: pointer;
+    }
+  }
+}
+
+.nav-item-logout {
+  list-style: none;
+
+  a {
+    text-decoration: none;
+    padding: 10px 20px;
+    color: $text-color;
+    background-color: $button-color-logout;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: $hover-color-logout;
+      cursor: pointer;
+    }
+  }
+}

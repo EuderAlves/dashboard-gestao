@@ -5,21 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="/static/style_base.css">
+    <!-- Link para Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Link para o CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_base.css') }}">
 </head>
 
 <body>
-    <div class="menu">
-        <h2>Menu</h2>
-        <ul>
-            <li><a href="/add_user">Adicionar Usuário</a></li>
-            <li><a href="/add_project">Adicionar Projeto</a></li>
-            <li><a href="/add_developer">Adicionar Desenvolvedor</a></li>
-        </ul>
-    </div>
-    <div class="content">
+    <header>
+        <nav class="navbar">
+            <ul class="navbar">
+                <li class="nav-item"><a href="/home">Home</a></li>
+                <li class="nav-item"><a href="/add_user">Add User</a></li>
+                <li class="nav-item"><a href="/add_project">Add Project</a></li>
+                <li class="nav-item"><a href="/add_developer">Add Developer</a></li>
+                <li class="nav-item-logout"><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
         {% block content %}{% endblock %}
-    </div>
+    </main>
 </body>
 
 </html>
