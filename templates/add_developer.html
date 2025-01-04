@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Adicionar Novo Desenvolvedor</h1>
+<form method="POST">
+    <label for="name">Nome:</label>
+    <input type="text" id="name" name="name" required><br>
+    <label for="role">Função:</label>
+    <select id="role" name="role" required>
+        <option value="frontend">Frontend</option>
+        <option value="backend">Backend</option>
+        <option value="fullstack">Fullstack</option>
+    </select><br>
+    <label for="frameworks">Frameworks Conhecidos:</label>
+    <input type="text" id="frameworks" name="frameworks" placeholder="Ex: Angular, React"><br>
+    <button type="submit">Adicionar Desenvolvedor</button>
+</form>
+{% endblock %}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/style_base.css">
+</head>
+
+<body>
+    <div class="menu">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="/add_user">Adicionar Usuário</a></li>
+            <li><a href="/add_project">Adicionar Projeto</a></li>
+            <li><a href="/add_developer">Adicionar Desenvolvedor</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+
+</html>
