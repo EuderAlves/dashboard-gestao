@@ -56,27 +56,48 @@ def home():
 @app.route('/add_user', methods=['GET', 'POST'])
 @login_required
 def add_user():
-    if request.method == 'POST':
-        try:
-            with open('data/users.json', 'r') as f:
-                users = json.load(f)
-        except FileNotFoundError:
-            users = []
+    try:
+        # Carregar usuários do JSON
+        with open('data/users.json', 'r') as f:
+            users = json.load(f)
+    except FileNotFoundError:
+        users = []  # Caso o arquivo não exista
 
+    if request.method == 'POST':
         new_user = {
             "email": request.form['email'],
             "password": request.form['password']
         }
         users.append(new_user)
 
+        # Salvar de volta no JSON
         with open('data/users.json', 'w') as f:
             json.dump(users, f, indent=4)
 
         flash("Usuário adicionado com sucesso!")
-        return redirect(url_for('home'))
+        return redirect(url_for('add_user'))  # Redireciona para evitar reenvio do formulário
 
-    return render_template('add_user.html')
+    # Passar a lista de usuários ao template
+    return render_template('add_user.html', users=users)
 
+
+@app.route('/remove_user', methods=['POST'])
+@login_required
+def remove_user():
+    email_to_remove = request.form['email']
+
+    # Carregar usuários do JSON
+    with open('data/users.json', 'r') as f:
+        users = json.load(f)
+
+    # Filtrar para excluir o usuário especificado
+    users = [user for user in users if user['email'] != email_to_remove]
+
+    # Salvar de volta no JSON
+    with open('data/users.json', 'w') as f:
+        json.dump(users, f, indent=4)
+
+    return "Usuário removido com sucesso!", 200
 @app.route('/add_project', methods=['GET', 'POST'])
 @login_required
 def add_project():
