@@ -1,3 +1,4 @@
+from datetime import date
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 import json
 
@@ -51,7 +52,15 @@ def logout():
 @app.route('/home')
 @login_required
 def home():
-    return render_template('base.html')
+    try:
+        with open('data/projects.json', 'r') as f:
+            projects = json.load(f)
+    except FileNotFoundError:
+        projects = []
+
+    today = date.today().isoformat()
+    return render_template('home.html', projects=projects, today=today)
+
 
 @app.route('/add_user', methods=['GET', 'POST'])
 @login_required
@@ -241,7 +250,8 @@ def manage_project(project_name):
         # Atualizar informações do projeto
         project['start_date'] = request.form.get('start_date', project.get('start_date', ''))
         project['end_date'] = request.form.get('end_date', project.get('end_date', ''))
-        project['tasks'] = int(request.form.get('tasks', project.get('tasks', 0)))
+        project['tasks_total'] = int(request.form.get('tasks_total', project.get('tasks_total', 0)))
+        project['tasks_completed'] = int(request.form.get('tasks_completed', project.get('tasks_completed', 0)))
         project['developers'] = request.form.getlist('developers')
 
         # Salvar as atualizações
@@ -260,6 +270,21 @@ def manage_project(project_name):
         developers = []
 
     return render_template('manage_project.html', project=project, developers=developers)
+@app.route('/project/<int:project_id>')
+@login_required
+def project_details(project_id):
+    try:
+        with open('data/projects.json', 'r') as f:
+            projects = json.load(f)
+    except FileNotFoundError:
+        return "Projeto não encontrado.", 404
+
+    if 0 <= project_id < len(projects):
+        project = projects[project_id]
+        return render_template('project_details.html', project=project)
+    else:
+        return "Projeto não encontrado.", 404
+
 
 if __name__ == '__main__':
     app.run(debug=True)

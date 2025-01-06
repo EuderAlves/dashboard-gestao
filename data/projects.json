@@ -1,12 +1,29 @@
 [
-    {
-        "name": "DashboardGereciamento",
-        "description": "Projeto para ter uma vis\u00e3o do gerenciamento de um projeto.",
-        "start_date": "2024-12-23",
-        "end_date": "2025-01-10",
-        "tasks": 14,
-        "developers": [
-            "Euder"
-        ]
-    }
+  {
+    "name": "DashboardGereciamento",
+    "description": "Projeto para ter uma vis\u00e3o do gerenciamento de um projeto.",
+    "start_date": "2024-12-23",
+    "end_date": "2025-01-10",
+    "developers": ["Euder", "Teste Dev"],
+    "tasks_total": 100,
+    "tasks_completed": 50
+  },
+  {
+    "name": "Teste sem iniciar",
+    "description": "Teste sem iniciar",
+    "start_date": "2025-02-03",
+    "end_date": "2025-03-31",
+    "developers": ["Teste Dev"],
+    "tasks_total": 50,
+    "tasks_completed": 25
+  },
+  {
+    "name": "Teste  atraso para entrega",
+    "description": "Teste  atraso para entrega",
+    "start_date": "2024-12-02",
+    "end_date": "2024-12-27",
+    "developers": ["Euder", "Teste Dev"],
+    "tasks_total": 100,
+    "tasks_completed": 2
+  }
 ]

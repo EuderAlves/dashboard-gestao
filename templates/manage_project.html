@@ -26,8 +26,13 @@
             </div>
 
             <div class="form-group">
-                <label for="tasks">Quantidade de Tasks:</label>
-                <input type="number" name="tasks" id="tasks" value="{{ project.get('tasks', 0) }}">
+                <label for="tasks_total">Quantidade de Tasks:</label>
+                <input type="number" name="tasks_total" id="tasks_total" value="{{ project.get('tasks_total', 0) }}">
+            </div>
+            <div class="form-group">
+                <label for="tasks_completed">Quantidade de Tasks Finalizadas:</label>
+                <input type="number" name="tasks_completed" id="tasks_completed"
+                    value="{{ project.get('tasks_completed', 0) }}">
             </div>
 
             <div class="form-group">

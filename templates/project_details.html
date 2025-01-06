@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Projeto</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_project_details.css') }}">
+</head>
+
+<body>
+    <a href="/home" class="back-home-button">Voltar</a>
+    <div class="container">
+        <h1>{{ project.name }}</h1>
+        <p>Descrição: {{ project.description }}</p>
+        <p>Desenvolvedores: {{ project.developers | join(', ') }}</p>
+        <p>Data de Início: {{ project.start_date }}</p>
+        <p>Data de Fim: {{ project.end_date }}</p>
+        <p>Tarefas Finalizadas: {{ project.tasks_completed }}</p>
+        <p>Total de Tarefas: {{ project.tasks_total }}</p>
+
+        <canvas id="tasksChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('tasksChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Tarefas Concluídas', 'Tarefas Restantes'],
+                datasets: [{
+                    data: [{{ project.tasks_completed }}, {{ project.tasks_total - project.tasks_completed }}],
+            backgroundColor: ['#4CAF50', '#FF5733']
+        }]
+            }
+        });
+    </script>
+</body>
+
+</html>
