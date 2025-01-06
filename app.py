@@ -52,6 +52,10 @@ def logout():
 @app.route('/home')
 @login_required
 def home():
+    return render_template('base.html')
+@app.route('/project')
+@login_required
+def projects():
     try:
         with open('data/projects.json', 'r') as f:
             projects = json.load(f)
