@@ -4,6 +4,8 @@
     <title>Gerenciar Usuários</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style_cards.css') }}">
 </head>
+<a href="/home" class="back-home-button">Voltar</a>
+
 <div class="container">
     <h1>Gerenciar Usuários</h1>
     <div class="card-grid">
@@ -21,7 +23,7 @@
         {% for user in users %}
         <div class="card user-card">
             <h3>{{ user.email }}</h3>
-            <p>Senha: {{ user.password }}</p>
+            <p>Senha: ********** </p>
             <form method="POST" action="/remove_user">
                 <input type="hidden" name="email" value="{{ user.email }}">
                 <button type="submit" class="remove-button">Remover</button>

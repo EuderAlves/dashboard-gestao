@@ -1,18 +1,67 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<h1>Adicionar Novo Desenvolvedor</h1>
-<form method="POST">
-    <label for="name">Nome:</label>
-    <input type="text" id="name" name="name" required><br>
-    <label for="role">Função:</label>
-    <select id="role" name="role" required>
-        <option value="frontend">Frontend</option>
-        <option value="backend">Backend</option>
-        <option value="fullstack">Fullstack</option>
-    </select><br>
-    <label for="frameworks">Frameworks Conhecidos:</label>
-    <input type="text" id="frameworks" name="frameworks" placeholder="Ex: Angular, React"><br>
-    <button type="submit">Adicionar Desenvolvedor</button>
-</form>
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Desenvolvedores</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_developers.css') }}">
+</head>
+
+<body>
+    <a href="/home" class="back-home-button">Voltar</a>
+
+    <div class="container">
+        <h1>Gerenciar Desenvolvedores</h1>
+
+        <!-- Formulário para adicionar desenvolvedor -->
+        <div class="form-container">
+            <h2>Adicionar Desenvolvedor</h2>
+            <form method="POST" action="/add_developer">
+                <input type="text" name="name" placeholder="Nome" required>
+                <input type="text" name="role" placeholder="Cargo" required>
+                <input type="text" name="frameworks" placeholder="Frameworks (separados por vírgula)" required>
+                <textarea name="details" placeholder="Detalhes adicionais"></textarea>
+                <button type="submit">Adicionar</button>
+            </form>
+        </div>
+
+        <!-- Lista de desenvolvedores -->
+        <div class="developer-grid">
+            {% for dev in developers %}
+            <div class="card developer-card">
+                <h3>{{ dev.name }}</h3>
+                <p><strong>Cargo:</strong> {{ dev.role }}</p>
+                <p><strong>Frameworks:</strong> {{ dev.frameworks }}</p>
+                <p><strong>Detalhes:</strong> {{ dev.details }}</p>
+
+                <!-- Botão de editar -->
+                <button class="edit-button" onclick="showEditForm('{{ dev.name }}')">Editar</button>
+
+                <!-- Formulário oculto para edição -->
+                <form method="POST" action="/edit_developer/{{ dev.name }}" class="edit-form"
+                    id="edit-form-{{ dev.name }}" style="display: none;">
+                    <input type="text" name="role" value="{{ dev.role }}" placeholder="Cargo">
+                    <input type="text" name="frameworks" value="{{ dev.frameworks }}" placeholder="Frameworks">
+                    <textarea name="details" placeholder="Detalhes">{{ dev.details }}</textarea>
+                    <button type="submit">Salvar</button>
+                </form>
+
+                <!-- Botão de remover -->
+                <form method="POST" action="/remove_developer/{{ dev.name }}">
+                    <button type="submit" class="remove-button">Remover</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function showEditForm(name) {
+            const form = document.getElementById(`edit-form-${name}`);
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+
+</html>

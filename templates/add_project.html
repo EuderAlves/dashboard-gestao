@@ -1,14 +1,43 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<h1>Adicionar Novo Projeto</h1>
-<form method="POST">
-    <label for="name">Nome do Projeto:</label>
-    <input type="text" id="name" name="name" required><br>
-    <label for="start_date">Data de Início:</label>
-    <input type="date" id="start_date" name="start_date" required><br>
-    <label for="end_date">Data de Entrega:</label>
-    <input type="date" id="end_date" name="end_date" required><br>
-    <button type="submit">Adicionar Projeto</button>
-</form>
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Projetos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_projects.css') }}">
+</head>
+
+<body>
+    <a href="/home" class="back-home-button">Voltar</a>
+
+    <div class="container">
+        <h1>Gerenciar Projetos</h1>
+        <div class="card-grid">
+            <!-- Card para Adicionar Novo Projeto -->
+            <div class="card add-project-card">
+                <h2>Adicionar Novo Projeto</h2>
+                <form method="POST" action="/add_project">
+                    <input type="text" name="name" placeholder="Nome do Projeto" required>
+                    <textarea name="description" placeholder="Descrição do Projeto" required></textarea>
+                    <button type="submit">Adicionar</button>
+                </form>
+            </div>
+
+            <!-- Exibir Projetos Existentes -->
+            {% for project in projects %}
+            <div class="card project-card">
+                <h3>{{ project.name }}</h3>
+                <p>{{ project.description }}</p>
+                <a href="{{ url_for('manage_project', project_name=project.name) }}">Gerenciar</a>
+                <form method="POST" action="/remove_project">
+                    <input type="hidden" name="name" value="{{ project.name }}">
+                    <button type="submit" class="remove-button">Remover</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>

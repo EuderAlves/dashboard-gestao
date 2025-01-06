@@ -118,23 +118,52 @@ def add_project():
             json.dump(projects, f, indent=4)
 
         flash("Projeto adicionado com sucesso!")
-        return redirect(url_for('home'))
+        return redirect(url_for('add_project'))
 
-    return render_template('add_project.html')
+    # Carregar projetos existentes
+    try:
+        with open('data/projects.json', 'r') as f:
+            projects = json.load(f)
+    except FileNotFoundError:
+        projects = []
+
+    return render_template('add_project.html', projects=projects)
+
+@app.route('/remove_project', methods=['POST'])
+@login_required
+def remove_project():
+    project_name = request.form['name']
+
+    # Carregar projetos do JSON
+    with open('data/projects.json', 'r') as f:
+        projects = json.load(f)
+
+    # Remover o projeto especificado
+    projects = [project for project in projects if project['name'] != project_name]
+
+    # Salvar de volta no JSON
+    with open('data/projects.json', 'w') as f:
+        json.dump(projects, f, indent=4)
+
+    flash("Projeto removido com sucesso!")
+    return redirect(url_for('add_project'))
+
 
 @app.route('/add_developer', methods=['GET', 'POST'])
 @login_required
 def add_developer():
-    if request.method == 'POST':
-        try:
-            with open('data/developers.json', 'r') as f:
-                developers = json.load(f)
-        except FileNotFoundError:
-            developers = []
+    try:
+        with open('data/developers.json', 'r') as f:
+            developers = json.load(f)
+    except FileNotFoundError:
+        developers = []
 
+    if request.method == 'POST':
         new_developer = {
             "name": request.form['name'],
-            "skills": request.form['skills']
+            "role": request.form['role'],
+            "frameworks": request.form['frameworks'],
+            "details": request.form['details']
         }
         developers.append(new_developer)
 
@@ -142,9 +171,95 @@ def add_developer():
             json.dump(developers, f, indent=4)
 
         flash("Desenvolvedor adicionado com sucesso!")
-        return redirect(url_for('home'))
+        return redirect(url_for('add_developer'))
 
-    return render_template('add_developer.html')
+    return render_template('add_developer.html', developers=developers)
+
+
+@app.route('/edit_developer/<name>', methods=['POST'])
+@login_required
+def edit_developer(name):
+    try:
+        with open('data/developers.json', 'r') as f:
+            developers = json.load(f)
+    except FileNotFoundError:
+        flash("Nenhum desenvolvedor encontrado!")
+        return redirect(url_for('add_developer'))
+
+    developer = next((dev for dev in developers if dev['name'] == name), None)
+    if developer:
+        developer['role'] = request.form['role']
+        developer['frameworks'] = request.form['frameworks']
+        developer['details'] = request.form['details']
+
+        with open('data/developers.json', 'w') as f:
+            json.dump(developers, f, indent=4)
+
+        flash("Desenvolvedor atualizado com sucesso!")
+    else:
+        flash("Desenvolvedor não encontrado!")
+
+    return redirect(url_for('add_developer'))
+
+
+@app.route('/remove_developer/<name>', methods=['POST'])
+@login_required
+def remove_developer(name):
+    try:
+        with open('data/developers.json', 'r') as f:
+            developers = json.load(f)
+    except FileNotFoundError:
+        flash("Nenhum desenvolvedor encontrado!")
+        return redirect(url_for('add_developer'))
+
+    developers = [dev for dev in developers if dev['name'] != name]
+
+    with open('data/developers.json', 'w') as f:
+        json.dump(developers, f, indent=4)
+
+    flash("Desenvolvedor removido com sucesso!")
+    return redirect(url_for('add_developer'))
+
+@app.route('/project/<project_name>', methods=['GET', 'POST'])
+@login_required
+def manage_project(project_name):
+    try:
+        # Carregar projetos existentes
+        with open('data/projects.json', 'r') as f:
+            projects = json.load(f)
+    except FileNotFoundError:
+        flash("Nenhum projeto encontrado!")
+        return redirect(url_for('add_project'))
+
+    # Encontrar o projeto correspondente
+    project = next((p for p in projects if p['name'] == project_name), None)
+    if not project:
+        flash("Projeto não encontrado!")
+        return redirect(url_for('add_project'))
+
+    if request.method == 'POST':
+        # Atualizar informações do projeto
+        project['start_date'] = request.form.get('start_date', project.get('start_date', ''))
+        project['end_date'] = request.form.get('end_date', project.get('end_date', ''))
+        project['tasks'] = int(request.form.get('tasks', project.get('tasks', 0)))
+        project['developers'] = request.form.getlist('developers')
+
+        # Salvar as atualizações
+        with open('data/projects.json', 'w') as f:
+            json.dump(projects, f, indent=4)
+
+        flash("Informações do projeto atualizadas com sucesso!")
+        return redirect(url_for('add_project'))  # Redirecionar após salvar
+
+
+    # Carregar desenvolvedores
+    try:
+        with open('data/developers.json', 'r') as f:
+            developers = json.load(f)
+    except FileNotFoundError:
+        developers = []
+
+    return render_template('manage_project.html', project=project, developers=developers)
 
 if __name__ == '__main__':
     app.run(debug=True)

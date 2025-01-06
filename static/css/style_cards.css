@@ -77,3 +77,23 @@ h1 {
 .remove-button:hover {
   background-color: #ff1a1a; /* Vermelho mais intenso */
 }
+
+.back-home-button {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 1000;
+  transition: background-color 0.3s;
+}
+
+.back-home-button:hover {
+  background-color: #45a049;
+}

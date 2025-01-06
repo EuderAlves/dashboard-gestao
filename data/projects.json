@@ -1,1 +1,12 @@
-[]
+[
+    {
+        "name": "DashboardGereciamento",
+        "description": "Projeto para ter uma vis\u00e3o do gerenciamento de um projeto.",
+        "start_date": "2024-12-23",
+        "end_date": "2025-01-10",
+        "tasks": 14,
+        "developers": [
+            "Euder"
+        ]
+    }
+]
